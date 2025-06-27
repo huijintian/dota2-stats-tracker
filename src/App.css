@@ -1,38 +1,373 @@
+/* src/App.css */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #1a1a1a;
+  color: #eee;
+}
+
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  padding: 20px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+header {
+  margin-bottom: 25px;
+}
+
+header h1 {
+  color: #00bcd4;
+  font-size: 2.8em;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+}
+
+header p {
+  color: #bbb;
+  font-size: 1.1em;
+  margin-bottom: 25px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error-message {
+  color: #ff6347;
+  font-weight: bold;
+  margin-top: 20px;
+  background-color: rgba(255, 99, 71, 0.1);
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #ff6347;
+  margin-bottom: 20px;
+}
+
+/* 顶部胜率对比容器 */
+.top-versus-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto 40px auto;
+  background-color: #262626;
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  padding: 25px;
+  box-sizing: border-box;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.versus-placeholder-top {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-style: italic;
+    background-color: #262626;
+    border-radius: 10px;
+}
+
+/* 主网格容器 */
+.main-grid-container {
+  display: grid;
+  /* 调整第三列宽度：从 minmax(160px, 220px) 调整为 minmax(200px, 260px) 或更大 */
+  grid-template-columns: minmax(480px, 1fr) minmax(480px, 1fr) minmax(200px, 260px); /* 增大查询战绩列的最小和最大宽度 */
+  grid-template-rows: auto auto 1fr;
+  width: 100%;
+  max-width: 1250px; /* 相应增大整体最大宽度 */
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  background-color: #262626;
+  margin-bottom: 50px;
+}
+
+/* 网格单元格通用样式 */
+.grid-cell {
+  border: 1px solid #333;
+  border-width: 0 1px 1px 0;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  text-align: center;
+  color: #eee;
+  background-color: transparent;
+}
+
+/* 移除最右侧列的右边框 */
+.grid-cell:nth-child(3n) {
+  border-right-width: 0;
+}
+
+/* 移除最底行的底边框 */
+.grid-cell:nth-last-child(-n+3) {
+  border-bottom-width: 0;
+}
+
+.label-cell {
+  font-weight: bold;
+  background-color: #333;
+  padding: 15px 10px;
+  color: #00bcd4;
+  font-size: 1.2em;
+  white-space: nowrap;
+}
+
+.input-cell {
+  padding: 12px;
+  background-color: #2a2a2a;
+}
+
+/* 下拉选择框样式 */
+.player-select-input {
+  padding: 12px 18px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background-color: #3a3a3a;
+  color: #eee;
+  font-size: 1.05em;
+  width: 100%;
+  max-width: 200px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="#eee" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.player-select-input:focus {
+  border-color: #00bcd4;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3), 0 0 8px rgba(0, 188, 212, 0.5);
+  outline: none;
+}
+
+/* 下拉选项样式 */
+.player-select-input option {
+    background-color: #3a3a3a;
+    color: #eee;
+}
+
+
+.button-cell {
+  padding: 12px;
+  background-color: #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.button-cell button {
+  padding: 14px 28px;
+  background-color: #4CAF50;
   color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 200px;
 }
 
-.App-link {
-  color: #61dafb;
+.button-cell button:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: translateY(-2px);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button-cell button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* 详细战绩开关样式 - 优化区域 */
+.toggle-switch-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px; /* 增加与按钮的间距 */
+    padding: 8px 12px; /* 增加整体内边距 */
+    background-color: #333; /* 背景色 */
+    border-radius: 20px; /* 圆角 */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.4); /* 内部阴影 */
+    transition: background-color 0.3s ease;
+    border: 1px solid #444;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  font-size: 0.98em; /* 稍微增大字体 */
+  color: #ccc; /* 默认文字颜色 */
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer; /* 确保整个开关区域可点击 */
+}
+
+.toggle-input {
+  display: none; /* 隐藏默认 checkbox */
+}
+
+.toggle-label {
+  position: relative;
+  width: 50px; /* 增大宽度 */
+  height: 28px; /* 增大高度 */
+  background-color: #555;
+  border-radius: 18px; /* 圆角轨道 */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  margin-right: 12px; /* 增大与文本的间距 */
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.4); /* 内部阴影 */
+  border: 1px solid #666;
+}
+
+.toggle-label::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px; /* 增大滑块大小 */
+  height: 22px;
+  background-color: #eee;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* 滑块阴影 */
+}
+
+.toggle-input:checked + .toggle-label {
+  background-color: #4CAF50; /* 选中时的绿色 */
+  border-color: #4CAF50; /* 选中时边框颜色 */
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.4), 0 0 10px rgba(76, 175, 80, 0.4); /* 选中时发光效果 */
+}
+
+.toggle-input:checked + .toggle-label::after {
+  transform: translateX(22px); /* 滑块移动距离 */
+  background-color: #fff;
+}
+
+.toggle-text {
+    font-weight: bold; /* 加粗文字 */
+    color: #fff; /* 文字颜色更亮 */
+}
+
+
+.data-cell {
+  padding: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #2a2a2a;
+}
+
+.data-cell.empty-cell {
+    min-height: 400px;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-style: italic;
+    font-size: 1.1em;
+    background-color: #2a2a2a;
+}
+
+/* 移除旧的布局样式 (保持不变) */
+.control-panel, .horizontal-divider, .player-data-display-panel, .main-content-wrapper, .player-column, .column-divider, .player-inputs, .fetch-button-wrapper, .button-column, .fetch-button-container {
+    display: none;
+}
+
+footer {
+  margin-top: 60px;
+  color: #777;
+  font-size: 0.9em;
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+    .main-grid-container {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-grid-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto 1fr;
+        max-width: 500px;
+    }
+    .grid-cell {
+        border-right-width: 1px;
+        border-left-width: 1px;
+    }
+    .grid-cell:nth-child(3n) {
+        border-right-width: 1px;
+    }
+    .grid-cell:nth-last-child(-n+1) {
+        border-bottom-width: 0;
+    }
+
+    /* 调整特定单元格的行/列定位以适应单列布局 */
+    /* 1. 玩家 A 标签 */
+    .grid-cell:nth-child(1) { grid-row: 1; grid-column: 1; }
+    /* 2. 玩家 A 输入 */
+    .grid-cell:nth-child(4) { grid-row: 2; grid-column: 1; }
+    /* 3. 玩家 B 标签 */
+    .grid-cell:nth-child(2) { grid-row: 3; grid-column: 1; }
+    /* 4. 玩家 B 输入 */
+    .grid-cell:nth-child(5) { grid-row: 4; grid-column: 1; }
+    /* 5. 查询战绩标签 */
+    .grid-cell:nth-child(3) { grid-row: 5; grid-column: 1; }
+    /* 6. 按钮 + 开关 */
+    .grid-cell:nth-child(6) { grid-row: 6; grid-column: 1; }
+    /* 7. 玩家 A 数据 */
+    .grid-cell:nth-child(7) { grid-row: 7; grid-column: 1; }
+    /* 8. 玩家 B 数据 */
+    .grid-cell:nth-child(8) { grid-row: 8; grid-column: 1; }
+    /* 9. 查询结果显示左侧 */
+    .grid-cell:nth-child(9) { grid-row: 9; grid-column: 1; }
+
+    .button-cell button {
+        max-width: 100%;
+    }
+    .top-versus-container {
+        max-width: 90%;
+    }
+
+    /* 小屏幕下，开关文字也可能需要调整 */
+    .toggle-switch-container {
+        padding: 6px 10px; /* 缩小内边距 */
+        margin-top: 8px; /* 调整间距 */
+    }
+    .toggle-text {
+        font-size: 0.8em;
+    }
+    .toggle-label {
+        width: 40px;
+        height: 20px;
+        border-radius: 10px;
+    }
+    .toggle-label::after {
+        width: 16px;
+        height: 16px;
+        top: 2px;
+        left: 2px;
+    }
+    .toggle-input:checked + .toggle-label::after {
+        transform: translateX(20px);
+    }
 }

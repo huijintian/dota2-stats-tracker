@@ -1,0 +1,29 @@
+/* src/components/PlayerInput.css */
+.player-input-group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.player-input-group input {
+  padding: 12px 18px; /* 增大内边距 */
+  border: 1px solid #555; /* 边框颜色 */
+  border-radius: 6px; /* 增大圆角 */
+  background-color: #3a3a3a; /* 输入框背景色 */
+  color: #eee;
+  font-size: 1.05em; /* 稍微增大字体 */
+  width: 100%;
+  max-width: 200px; /* 适当增大最大宽度 */
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); /* 添加内阴影 */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.player-input-group input:focus {
+  border-color: #00bcd4; /* 聚焦时边框颜色 */
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3), 0 0 8px rgba(0, 188, 212, 0.5); /* 聚焦时发光效果 */
+  outline: none; /* 移除默认焦点轮廓 */
+}
+
+.player-input-group input::placeholder {
+  color: #999;
+}
