@@ -1,8 +1,8 @@
 /* src/components/PlayerCard.css */
 .player-card {
-  background-color: transparent; /* 背景色由父容器提供 */
-  border-radius: 0; /* 圆角由父容器提供 */
-  padding: 15px; /* 内部填充 */
+  background-color: transparent;
+  border-radius: 0;
+  padding: 15px;
   box-shadow: none;
   width: 100%;
   max-width: none;
@@ -15,83 +15,245 @@
 }
 
 .player-avatar {
-  width: 90px; /* 增大头像尺寸 */
+  width: 90px;
   height: 90px;
   border-radius: 50%;
-  margin-bottom: 15px; /* 调整间距 */
+  margin-bottom: 15px;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  border: 3px solid #00bcd4; /* 更明显的边框 */
-  box-shadow: 0 0 12px rgba(0, 188, 212, 0.6); /* 更明显的发光效果 */
-  object-fit: cover; /* 确保图片覆盖 */
+  border: 3px solid #00bcd4;
+  box-shadow: 0 0 12px rgba(0, 188, 212, 0.6);
+  object-fit: cover;
 }
 
 .player-card h3 {
-  color: #ffd700; /* 玩家名称颜色 */
+  color: #ffd700;
   margin-top: 0;
   margin-bottom: 10px;
   text-align: center;
-  font-size: 1.8em; /* 增大字体 */
-  text-shadow: 0 0 6px rgba(255, 215, 0, 0.4); /* 名称发光 */
+  font-size: 2em;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
 }
 
 .player-card p {
-  margin-bottom: 6px; /* 缩小间距 */
-  font-size: 0.98em; /* 微调字体大小 */
+  margin-bottom: 6px;
+  font-size: 1.05em;
   line-height: 1.4;
   text-align: center;
+  color: #ccc;
 }
 
 .player-card strong {
-  color: #00bcd4; /* 重要数字颜色 */
+  color: #00bcd4;
+  font-weight: bold;
 }
 
 .player-card h4 {
   color: #00bcd4;
-  margin-top: 25px;
-  margin-bottom: 12px; /* 调整最近比赛标题间距 */
+  margin-top: 30px;
+  margin-bottom: 15px;
   text-align: center;
-  font-size: 1.4em; /* 增大字体 */
+  font-size: 1.6em;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(0, 188, 212, 0.5);
 }
 
+/* 新增：玩家概览数据区通用样式 */
+.player-overview-section {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #3a3a3a; /* 分割线 */
+    text-align: center;
+}
+.player-overview-section h4 { /* 覆盖上面的 h4 样式，使其居中 */
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+
+/* 常用英雄列表样式 */
+.top-heroes-list {
+    display: flex;
+    flex-direction: column; /* 垂直排列英雄项 */
+    gap: 15px; /* 英雄项之间的间距 */
+    align-items: center; /* 居中显示 */
+    margin-top: 10px;
+}
+
+.top-hero-item {
+    display: flex;
+    align-items: center;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 10px 15px;
+    width: 90%; /* 控制单个英雄项的宽度 */
+    max-width: 300px; /* 最大宽度 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    border: 1px solid #3a3a3a;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.top-hero-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+}
+
+.top-hero-icon {
+    width: 48px; /* 常用英雄头像大小 */
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffd700; /* 黄色边框 */
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.top-hero-icon-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #555;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6em;
+    font-weight: bold;
+    border: 2px solid #777;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.top-hero-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+.top-hero-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #eee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.top-hero-winrate {
+    font-size: 0.9em;
+    color: #4CAF50; /* 绿色胜率 */
+    font-weight: bold;
+}
+.top-hero-games {
+    font-size: 0.8em;
+    color: #aaa;
+}
+
+
+/* KDA 表现列表样式 */
+.kda-performance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.performance-item {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 内部元素居中对齐 */
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 10px 15px;
+    width: 90%;
+    max-width: 350px; /* 适当增大 KDA 项的最大宽度 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    border: 1px solid #3a3a3a;
+    font-size: 0.95em;
+    gap: 8px; /* 标签和值之间的间距 */
+}
+
+.performance-label {
+    font-weight: bold;
+    color: #bbb;
+    flex-shrink: 0; /* 防止标签文字被压缩 */
+}
+
+.performance-value {
+    font-weight: bold;
+    color: #ffd700; /* 黄色 KDA 值 */
+    flex-grow: 1; /* 值占据更多空间 */
+    text-align: left; /* 值左对齐 */
+}
+
+.performance-hero {
+    font-size: 0.85em;
+    color: #00bcd4; /* 青色英雄名称 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px; /* 限制英雄名称宽度 */
+    flex-shrink: 0; /* 防止英雄名称被压缩 */
+}
+
+/* 最佳KDA和最差KDA的特定样式 */
+.performance-item.best-kda {
+    border-color: #4CAF50; /* 绿色边框 */
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}
+.performance-item.best-kda .performance-value {
+    color: #4CAF50;
+}
+
+.performance-item.worst-kda {
+    border-color: #dc3545; /* 红色边框 */
+    box-shadow: 0 0 8px rgba(220, 53, 69, 0.4);
+}
+.performance-item.worst-kda .performance-value {
+    color: #dc3545;
+}
+
+
 /* ======================================= */
-/* 最近比赛表格样式 */
+/* 最近比赛表格样式 (保持不变，或微调以适应新内容) */
 /* ======================================= */
 
 .recent-matches-table-container {
-  border: 1px solid #3a3a3a; /* 更柔和的边框 */
+  border: 1px solid #3a3a3a;
   border-radius: 8px;
   overflow: hidden;
-  margin-top: 15px;
-  background-color: #1f1f1f; /* 表格背景色 */
+  margin-top: 30px; /* 增大与上方新内容的间距 */
+  background-color: #1f1f1f;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.3); /* 内部阴影 */
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
 }
 
 .recent-matches-table-header {
   display: grid;
-  /* 调整 grid-template-columns 以容纳更多的内容 */
-  /* 结果(80px) 英雄(更宽) KDA(90px) 正反补(90px) 等级(60px) */
-  grid-template-columns: 80px 1.8fr 90px 90px 60px; /* 增大英雄列的比例 */
+  grid-template-columns: 80px 1.8fr 90px 90px 60px;
   align-items: center;
   text-align: center;
-  background-color: #333; /* 表头背景色 */
+  background-color: #333;
   font-weight: bold;
-  padding: 12px 0; /* 增大内边距 */
+  padding: 14px 0;
   color: #00bcd4;
-  font-size: 0.95em; /* 调整字体大小 */
-  border-bottom: 1px solid #444; /* 表头底部边框 */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* 表头阴影 */
+  font-size: 1em;
+  border-bottom: 1px solid #444;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .recent-matches-table-header > .match-col {
-    border-right: 1px solid #444; /* 列分隔线 */
+    border-right: 1px solid #444;
 }
 .recent-matches-table-header > .match-col:last-child {
-    border-right: none; /* 最后一列没有右边框 */
+    border-right: none;
 }
 
 
@@ -104,13 +266,12 @@
 
 .match-row {
   display: grid;
-  /* 调整 grid-template-columns 以容纳更多的内容，与表头一致 */
   grid-template-columns: 80px 1.8fr 90px 90px 60px;
   align-items: center;
-  font-size: 0.88em;
+  font-size: 0.95em;
   transition: background-color 0.2s ease;
-  border-bottom: 1px solid #2a2a2a; /* 行分隔线 */
-  padding: 8px 0;
+  border-bottom: 1px solid #2a2a2a;
+  padding: 10px 0;
 }
 
 .match-row:hover {
@@ -132,6 +293,7 @@
   color: white;
   min-width: 50px;
   text-align: center;
+  font-size: 0.9em;
 }
 .match-result.win { background-color: #28a745; }
 .match-result.loss { background-color: #dc3545; }
@@ -142,34 +304,34 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 8px;
-    padding-left: 10px;
-    padding-right: 5px;
-    white-space: nowrap; /* 确保整个英雄列不换行 */
-    overflow: hidden; /* 溢出隐藏 */
-    text-overflow: ellipsis; /* 溢出显示省略号 */
+    gap: 10px;
+    padding-left: 12px;
+    padding-right: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .hero-icon {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #555;
+  border: 2px solid #555;
   flex-shrink: 0;
-  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  box-shadow: 0 0 6px rgba(0,0,0,0.4);
 }
 .hero-icon-placeholder {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background-color: #555;
   color: #ccc;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2em;
+  font-size: 1.4em;
   font-weight: bold;
-  border: 1px solid #777;
+  border: 2px solid #777;
   flex-shrink: 0;
 }
 .hero-details {
@@ -178,13 +340,13 @@
     align-items: flex-start;
     justify-content: center;
     overflow: hidden;
-    line-height: 1.2;
+    line-height: 1.3;
     flex-grow: 1;
     min-width: 0;
 }
 .hero-name {
-  font-size: 0.88em;
-  color: #ccc;
+  font-size: 0.95em;
+  color: #eee;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -192,7 +354,7 @@
   font-weight: bold;
 }
 .match-time-ago {
-  font-size: 0.68em;
+  font-size: 0.75em;
   color: #aaa;
   white-space: nowrap;
   overflow: hidden;
@@ -203,8 +365,8 @@
 /* KDA 列 */
 .kda-col {
     color: #fff;
-    font-size: 0.9em;
-    padding: 0 5px;
+    font-size: 1em;
+    padding: 0 8px;
     text-align: center;
 }
 .kda-score {
@@ -214,26 +376,26 @@
 
 /* 正反补 (Last Hits / Denies) 列样式 */
 .lh-denies-col {
-    font-size: 0.9em;
+    font-size: 1em;
     color: #fff;
     text-align: center;
-    padding: 0 5px;
+    padding: 0 8px;
 }
 .lh-denies-score {
     font-weight: bold;
-    color: #a4c639; /* 可以选择一个绿色系或浅色 */
+    color: #a4c639;
 }
 
 /* 等级 (Level) 列样式 */
 .level-col {
-    font-size: 0.9em;
+    font-size: 1em;
     color: #fff;
     text-align: center;
-    padding: 0 5px;
+    padding: 0 8px;
 }
 .level-score {
     font-weight: bold;
-    color: #f0e68c; /* 可以选择一个黄色系或亮色 */
+    color: #f0e68c;
 }
 
 
@@ -256,36 +418,72 @@
 
 /* 响应式调整 PlayerCard.css */
 @media (max-width: 992px) {
-    /* 比赛行在小屏幕下可能需要调整网格列 */
+    .player-card h3 {
+        font-size: 1.6em;
+    }
+    .player-card h4 {
+        font-size: 1.3em;
+    }
+    .top-heroes-list {
+        gap: 10px;
+    }
+    .top-hero-item {
+        padding: 8px 12px;
+        max-width: 280px;
+    }
+    .top-hero-icon, .top-hero-icon-placeholder {
+        width: 40px;
+        height: 40px;
+    }
+    .top-hero-name {
+        font-size: 0.9em;
+    }
+    .top-hero-winrate, .top-hero-games {
+        font-size: 0.8em;
+    }
+    .kda-performance-list {
+        gap: 8px;
+    }
+    .performance-item {
+        padding: 8px 12px;
+        max-width: 320px;
+        font-size: 0.9em;
+    }
+    .performance-hero {
+        max-width: 70px;
+    }
+    .recent-matches-table-container {
+        margin-top: 20px;
+    }
     .recent-matches-table-header,
     .match-row {
-        grid-template-columns: 60px 1.5fr 70px 70px 50px; /* 进一步缩小列宽，增大英雄列比例 */
-        font-size: 0.8em;
+        grid-template-columns: 60px 1.5fr 70px 70px 50px;
+        font-size: 0.85em;
     }
     .hero-col {
-        padding-left: 5px;
-        gap: 5px;
+        padding-left: 8px;
+        gap: 6px;
     }
     .hero-icon, .hero-icon-placeholder {
-        width: 30px; /* 进一步缩小头像 */
-        height: 30px;
+        width: 36px;
+        height: 36px;
     }
     .hero-name {
-        font-size: 0.75em;
+        font-size: 0.8em;
     }
     .match-time-ago {
-        font-size: 0.55em;
+        font-size: 0.6em;
     }
     .match-result {
-        padding: 2px 5px;
-        font-size: 0.75em;
+        padding: 3px 6px;
+        font-size: 0.85em;
     }
     .kda-col, .lh-denies-col, .level-col {
-        font-size: 0.75em;
-        padding: 0 3px;
+        font-size: 0.85em;
+        padding: 0 5px;
     }
     .recent-matches-table-header {
-        font-size: 0.8em;
-        padding: 10px 0;
+        font-size: 0.9em;
+        padding: 12px 0;
     }
 }

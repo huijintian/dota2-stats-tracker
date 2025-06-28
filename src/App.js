@@ -4,6 +4,7 @@ import PlayerCard from './components/PlayerCard';
 import PlayerInput from './components/PlayerInput';
 import VersusDisplay from './components/VersusDisplay';
 import './App.css'; // 确保引入CSS
+import { HERO_CHINESE_NAMES } from './utils/translate_cn'; // 导入中文英雄名称映射
 
 // 预设玩家列表
 const PRESET_PLAYERS = [
@@ -18,7 +19,7 @@ const PRESET_PLAYERS = [
 // 辅助函数：格式化时间戳为“N天前”
 const formatTimeAgo = (timestamp) => {
   const now = new Date();
-  const matchDate = new Date(timestamp * 1000); // OpenDota API 返回的是秒级时间戳
+  const matchDate = new Date(timestamp * 1000); // OpenDota API 的时间戳是秒，需要转换为毫秒
   const diffTime = Math.abs(now.getTime() - matchDate.getTime());
   const diffSec = Math.round(diffTime / 1000);
   const diffMin = Math.round(diffSec / 60);
@@ -38,7 +39,7 @@ const formatTimeAgo = (timestamp) => {
   }
 };
 
-// 辅助函数：获取游戏模式名称
+// 辅助函数：获取游戏模式名称 (目前未在PlayerCard中使用，但保留)
 const getGameModeName = (modeId) => {
   const gameModes = {
     0: '未知',
@@ -59,7 +60,7 @@ const getGameModeName = (modeId) => {
   return gameModes[modeId] || '未知模式';
 };
 
-// 辅助函数：获取段位名称
+// 辅助函数：获取段位名称 (目前未在PlayerCard中使用，但保留)
 const getRankTierName = (rankTier) => {
   if (rankTier === null || rankTier === undefined) return '未定级';
 
@@ -86,10 +87,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [heroes, setHeroes] = useState({});
-  // 新增状态来控制是否显示详细战绩（正反补, 等级）
-  const [showDetailedStats, setShowDetailedStats] = useState(false); // 默认关闭
+  const [showDetailedStats, setShowDetailedStats] = useState(false);
 
-  // 状态来控制玩家 A 和玩家 B 是否为手动输入模式
   const [isPlayer1ManualInput, setIsPlayer1ManualInput] = useState(false);
   const [isPlayer2ManualInput, setIsPlayer2ManualInput] = useState(false);
 
@@ -107,7 +106,9 @@ function App() {
           const heroNameForImg = hero.name.replace('npc_dota_hero_', '');
           heroesMap[hero.id] = {
             ...hero,
-            imgPath: `/apps/dota2/images/heroes/${heroNameForImg}_sb.png`
+            imgPath: `/apps/dota2/images/heroes/${heroNameForImg}_sb.png`,
+            // 添加中文名称：从映射表中查找，如果不存在则回退到英文名称
+            chinese_name: HERO_CHINESE_NAMES[hero.localized_name] || hero.localized_name
           };
         });
         setHeroes(heroesMap);
@@ -122,7 +123,7 @@ function App() {
 
   const fetchPlayerData = async (playerId, setPlayerData) => {
     if (!playerId) {
-      setPlayerData(null); // Clear data if ID is empty
+      setPlayerData(null);
       return;
     }
 
@@ -136,6 +137,7 @@ function App() {
       }
       const playerData = await playerRes.json();
 
+      // 获取玩家最近100场比赛概览数据 (用于总胜率、最强最弱KDA分析和常用英雄统计)
       const matchesOverviewRes = await fetch(`https://api.opendota.com/api/players/${playerId}/matches?limit=100&lobby_type=7`);
       if (!matchesOverviewRes.ok) {
         throw new Error('Failed to fetch matches overview. OpenDota API might be rate-limiting or player has no recent ranked games.');
@@ -155,10 +157,14 @@ function App() {
         }
       });
 
+      // 移除对 /api/players/${playerId}/heroes 的调用
+      // `mostPlayedHeroes` 将在 PlayerCard 中通过 `allMatchesOverview` 计算
+      // 因此 `setPlayerData` 中的 `mostPlayedHeroes` 可以置空或完全移除
+      // let playerHeroesData = []; // 声明并留空
+
       const recentMatchesBasic = matchesOverviewData.slice(0, 10);
       let detailedRecentMatches = [];
 
-      // 仅当 showDetailedStats 为 true 时，才发起详细数据请求
       if (showDetailedStats) {
         const detailedMatchesPromises = recentMatchesBasic.map(async (match) => {
           try {
@@ -191,7 +197,6 @@ function App() {
         });
         detailedRecentMatches = (await Promise.all(detailedMatchesPromises)).filter(Boolean);
       } else {
-        // 如果不显示详细数据，则直接使用基本匹配数据，并将详细字段设置为 null
         detailedRecentMatches = recentMatchesBasic.map(match => ({
           ...match,
           last_hits: null,
@@ -205,7 +210,9 @@ function App() {
         wins,
         totalGames,
         winRate: totalGames > 0 ? (wins / totalGames * 100).toFixed(2) : '0.00',
-        recentMatches: detailedRecentMatches
+        recentMatches: detailedRecentMatches,
+        allMatchesOverview: matchesOverviewData, // 前100场概览数据仍然保留，用于计算常用英雄和KDA表现
+        mostPlayedHeroes: [], // 常用英雄数据现在将通过allMatchesOverview在PlayerCard中统计，这里保持为空数组
       });
 
     } catch (err) {
@@ -217,21 +224,19 @@ function App() {
   };
 
   const handleFetchAllPlayers = async () => {
-    // 确保英雄数据已加载
     if (Object.keys(heroes).length === 0) {
       setError("英雄数据正在加载中，请稍后再试！");
       return;
     }
-    // 只有在 ID 有效时才发起查询
-    if (!player1Id && !isPlayer1ManualInput) { // If it's a dropdown and nothing is selected
+    if (!player1Id && !isPlayer1ManualInput) {
         setError("请为玩家 A 选择一个 ID 或手动输入。");
         return;
     }
-    if (!player2Id && !isPlayer2ManualInput) { // If it's a dropdown and nothing is selected
+    if (!player2Id && !isPlayer2ManualInput) {
         setError("请为玩家 B 选择一个 ID 或手动输入。");
         return;
     }
-    if ((!player1Id && isPlayer1ManualInput) || (!player2Id && isPlayer2ManualInput)) {
+    if ((isPlayer1ManualInput && !player1Id) || (isPlayer2ManualInput && !player2Id)) {
         setError("手动输入模式下，玩家 ID 不能为空。");
         return;
     }
@@ -262,12 +267,10 @@ function App() {
       </div>
 
       <div className="main-grid-container">
-        {/* 第一行：标签 */}
         <div className="grid-cell label-cell">玩家 A</div>
         <div className="grid-cell label-cell">玩家 B</div>
         <div className="grid-cell label-cell">查询战绩</div>
 
-        {/* 第二行：输入框和按钮 */}
         <div className="grid-cell input-cell">
           {isPlayer1ManualInput ? (
             <PlayerInput value={player1Id} onChange={setPlayer1Id} id="playerAId" />
@@ -280,12 +283,12 @@ function App() {
                 const selectedValue = e.target.value;
                 if (selectedValue === 'manual') {
                   setIsPlayer1ManualInput(true);
-                  setPlayer1Id(''); // 清空 ID，等待手动输入
+                  setPlayer1Id('');
                 } else {
                   setIsPlayer1ManualInput(false);
                   setPlayer1Id(selectedValue);
                 }
-                setPlayer1Data(null); // 清空数据，等待新查询
+                setPlayer1Data(null);
               }}
             >
               <option value="">请选择玩家 A</option>
@@ -310,12 +313,12 @@ function App() {
                 const selectedValue = e.target.value;
                 if (selectedValue === 'manual') {
                   setIsPlayer2ManualInput(true);
-                  setPlayer2Id(''); // 清空 ID，等待手动输入
+                  setPlayer2Id('');
                 } else {
                   setIsPlayer2ManualInput(false);
                   setPlayer2Id(selectedValue);
                 }
-                setPlayer2Data(null); // 清空数据，等待新查询
+                setPlayer2Data(null);
               }}
             >
               <option value="">请选择玩家 B</option>
@@ -332,7 +335,6 @@ function App() {
           <button onClick={handleFetchAllPlayers} disabled={loading || Object.keys(heroes).length === 0}>
             {loading ? '加载中...' : Object.keys(heroes).length === 0 ? '加载英雄数据...' : '查询战绩'}
           </button>
-          {/* 新增：详细战绩查询开关 */}
           <div className="toggle-switch-container">
               <div className="toggle-switch">
                 <input
@@ -343,12 +345,11 @@ function App() {
                   onChange={(e) => setShowDetailedStats(e.target.checked)}
                 />
                 <label htmlFor="toggleDetailedStats" className="toggle-label"></label>
-                <span className="toggle-text">显示正反补, 等级</span>
+                <span className="toggle-text">显示详细战绩 (正反补, 等级)</span>
               </div>
           </div>
         </div>
 
-        {/* 第三行：玩家数据 PlayerCard */}
         <div className="grid-cell data-cell">
           {player1Data ? (
             <PlayerCard playerData={player1Data} playerName="玩家 A" heroesMap={heroes} />
