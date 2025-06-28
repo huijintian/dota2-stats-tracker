@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/dota2-stats-tracker/static/css/main.bbff67e5.css",
-    "main.js": "/dota2-stats-tracker/static/js/main.c68333d4.js",
+    "main.css": "/dota2-stats-tracker/static/css/main.ffbf0d75.css",
+    "main.js": "/dota2-stats-tracker/static/js/main.bf095fef.js",
     "static/js/453.15827f27.chunk.js": "/dota2-stats-tracker/static/js/453.15827f27.chunk.js",
     "index.html": "/dota2-stats-tracker/index.html",
-    "main.bbff67e5.css.map": "/dota2-stats-tracker/static/css/main.bbff67e5.css.map",
-    "main.c68333d4.js.map": "/dota2-stats-tracker/static/js/main.c68333d4.js.map",
+    "main.ffbf0d75.css.map": "/dota2-stats-tracker/static/css/main.ffbf0d75.css.map",
+    "main.bf095fef.js.map": "/dota2-stats-tracker/static/js/main.bf095fef.js.map",
     "453.15827f27.chunk.js.map": "/dota2-stats-tracker/static/js/453.15827f27.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.bbff67e5.css",
-    "static/js/main.c68333d4.js"
+    "static/css/main.ffbf0d75.css",
+    "static/js/main.bf095fef.js"
   ]
 }
